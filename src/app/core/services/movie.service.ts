@@ -61,12 +61,4 @@ export class MovieService {
   getMovies(): Signal<Movie[]> {
     return this.#movies.asReadonly();
   }
-
-  updateMovieRating(movieId: string, newRating: 1 | 2 | 3 | 4 | 5): void {
-    const movieIndex = this.#movies().findIndex((movie) => movie.id === movieId);
-
-    if (movieIndex !== -1) {
-      this.#movies()[movieIndex].rating = newRating;
-    }
-  }
 }

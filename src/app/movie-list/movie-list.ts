@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import { MovieService } from '../core/services/movie.service';
 import { StarRating } from '../shared/components/star-rating/star-rating';
 
@@ -7,7 +7,7 @@ import { StarRating } from '../shared/components/star-rating/star-rating';
   imports: [StarRating],
   template: `
     <div class="space-y-4">
-      @for (movie of movies(); track movie.id) {
+      @for (movie of filteredMovies(); track movie.id) {
         <div
           class="bg-white dark:bg-slate-800 p-4 rounded-lg shadow-md flex justify-between items-center"
         >
@@ -26,16 +26,16 @@ import { StarRating } from '../shared/components/star-rating/star-rating';
     </div>
   `,
 })
-export class MovieList implements OnChanges {
-  @Input({ required: true }) moviesFilter = '';
+export class MovieList {
+  filter = input.required({
+    transform: (value: string) => value.toLowerCase(),
+    alias: 'moviesFilter',
+  });
 
   readonly #movieService = inject(MovieService);
+  readonly #movies = this.#movieService.getMovies();
 
-  protected readonly movies = this.#movieService.getMovies();
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['moviesFilter']?.currentValue) {
-      console.log(this.moviesFilter);
-    }
-  }
+  protected filteredMovies = computed(() =>
+    this.#movies().filter((movie) => movie.name.toLowerCase().includes(this.filter())),
+  );
 }
