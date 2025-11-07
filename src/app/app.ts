@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MovieList } from './movie-list/movie-list';
 
@@ -25,12 +25,12 @@ import { MovieList } from './movie-list/movie-list';
 
           <!-- Movie List -->
 
-          <combi-movie-list [moviesFilter]="moviesFilter" />
+          <combi-movie-list [moviesFilter]="moviesFilter()" />
         </div>
       </main>
     </div>
   `,
 })
 export class App {
-  protected moviesFilter = '';
+  protected moviesFilter = signal('');
 }
