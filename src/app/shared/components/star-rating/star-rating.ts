@@ -1,11 +1,11 @@
-import { Component, input, output } from '@angular/core';
+import { Component, model } from '@angular/core';
 
 @Component({
   selector: 'combi-star-rating',
   template: `
     <div class="flex items-center">
       @for (star of [1, 2, 3, 4, 5]; track star) {
-        <button (click)="ratingChange.emit(star)" class="cursor-pointer">
+        <button (click)="rating.set(star)" class="cursor-pointer">
           <svg
             fill="currentColor"
             viewBox="0 0 20 20"
@@ -24,7 +24,5 @@ import { Component, input, output } from '@angular/core';
   `,
 })
 export class StarRating {
-  rating = input.required<number>();
-
-  ratingChange = output<number>();
+  rating = model.required<number>();
 }
